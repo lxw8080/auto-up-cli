@@ -1,0 +1,40 @@
+{
+  "name": "ai-cli-manager",
+  "version": "1.2.1",
+  "description": "AI CLI工具一键升级管理器 - 统一管理多个AI编程CLI工具的安装和升级（17+个工具支持）",
+  "main": "ai-cli-manager.js",
+  "bin": {
+    "ai-cli-manager": "./ai-cli-manager.js",
+    "ai-upgrade": "./ai-cli-manager.js"
+  },
+  "scripts": {
+    "start": "node ai-cli-manager.js",
+    "upgrade": "node ai-cli-manager.js"
+  },
+  "keywords": [
+    "cli",
+    "ai",
+    "programming",
+    "gemini",
+    "claude",
+    "codex",
+    "auggie",
+    "continue",
+    "codegpt",
+    "tabnine",
+    "aider",
+    "opencommit",
+    "gitleaks",
+    "gitmoji",
+    "upgrade",
+    "manager"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2"
+  }
+}
