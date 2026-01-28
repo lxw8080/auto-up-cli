@@ -1,0 +1,76 @@
+{
+  "tools": [
+    {
+      "id": "claude-code",
+      "name": "Claude Code",
+      "package": "@anthropic-ai/claude-code",
+      "category": "AI助手",
+      "builtin": true,
+      "note": "npm安装已弃用，通过GitHub获取最新版本",
+      "githubRepo": "anthropics/claude-code",
+      "installType": "custom",
+      "installCommands": {
+        "windows": "winget install Anthropic.ClaudeCode",
+        "windows_alt": "irm https://claude.ai/install.ps1 | iex",
+        "macos": "brew install --cask claude-code",
+        "macos_alt": "curl -fsSL https://claude.ai/install.sh | bash",
+        "linux": "curl -fsSL https://claude.ai/install.sh | bash"
+      },
+      "versionCommand": "claude --version"
+    },
+    {
+      "id": "codex",
+      "name": "Codex CLI",
+      "package": "@openai/codex",
+      "category": "AI助手",
+      "builtin": true,
+      "note": "",
+      "githubRepo": "openai/codex"
+    },
+    {
+      "id": "auggie",
+      "name": "Auggie CLI",
+      "package": "@augmentcode/auggie",
+      "category": "AI助手",
+      "builtin": true,
+      "note": ""
+    },
+    {
+      "id": "gemini-cli",
+      "name": "Gemini CLI",
+      "package": "@google/gemini-cli",
+      "category": "AI助手",
+      "builtin": true,
+      "note": "",
+      "githubRepo": "google-gemini/gemini-cli"
+    },
+    {
+      "id": "opencode-ai",
+      "name": "OpenCode",
+      "package": "opencode-ai",
+      "category": "AI助手",
+      "builtin": false,
+      "note": ""
+    },
+    {
+      "id": "openspec",
+      "name": "OpenSpec",
+      "package": "@fission-ai/openspec",
+      "category": "AI编程助手",
+      "builtin": false,
+      "note": ""
+    },
+    {
+      "id": "iflow-cli",
+      "name": "iflow",
+      "package": "@iflow-ai/iflow-cli",
+      "category": "AI助手",
+      "builtin": false,
+      "note": ""
+    }
+  ],
+  "settings": {
+    "auto_check_on_startup": true,
+    "check_interval_hours": 24
+  }
+}

@@ -5,7 +5,10 @@
       "Bash(node:*)",
       "Bash(bash install-dependencies.sh --help:*)",
       "Bash(bash:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(timeout 10s:*)",
+      "WebFetch(domain:www.npmjs.com)",
+      "Bash(npm view:*)"
     ],
     "deny": [],
     "ask": []

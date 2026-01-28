@@ -45,7 +45,7 @@ const CLI_TOOLS = {
   // GitHub官方AI工具
   'copilot-cli': {
     name: 'copilot-cli',
-    package: '@github/copilot-cli',
+    package: '@github/copilot',
     displayName: 'GitHub Copilot CLI',
     category: 'AI助手',
     note: '需要GitHub Copilot订阅'
@@ -53,34 +53,37 @@ const CLI_TOOLS = {
   // AI编程助手
   'continue': {
     name: 'continue',
-    package: '@continue.dev/cli',
+    package: '@continuedev/cli',
     displayName: 'Continue CLI',
     category: 'AI编程助手'
   },
-  'codegpt': {
-    name: 'codegpt',
-    package: 'codegpt-cli',
-    displayName: 'CodeGPT CLI',
-    category: 'AI编程助手'
-  },
-  'tabnine': {
-    name: 'tabnine',
-    package: '@tabnine/cli',
-    displayName: 'Tabnine CLI',
-    category: 'AI编程助手'
-  },
+  // CodeGPT 实际是Go语言编写的二进制，npm包不存在
+  // 'codegpt': {
+  //   name: 'codegpt',
+  //   package: 'codegpt-cli',
+  //   displayName: 'CodeGPT CLI',
+  //   category: 'AI编程助手'
+  // },
+  // Tabnine CLI 不存在npm包，只有IDE插件
+  // 'tabnine': {
+  //   name: 'tabnine',
+  //   package: '@tabnine/cli',
+  //   displayName: 'Tabnine CLI',
+  //   category: 'AI编程助手'
+  // },
   'opencommit': {
     name: 'opencommit',
-    package: 'opencommit-cli',
+    package: 'opencommit',
     displayName: 'OpenCommit',
     category: 'AI编程助手'
   },
-  'aider': {
-    name: 'aider',
-    package: 'aider-chat',
-    displayName: 'Aider',
-    category: 'AI编程助手'
-  },
+  // Aider 是Python包，不是npm包
+  // 'aider': {
+  //   name: 'aider',
+  //   package: 'aider-chat',
+  //   displayName: 'Aider',
+  //   category: 'AI编程助手'
+  // },
   'gitleaks': {
     name: 'gitleaks',
     package: 'gitleaks',
@@ -93,22 +96,22 @@ const CLI_TOOLS = {
     displayName: 'Gitmoji CLI',
     category: 'Git工具'
   },
-  // 通义千问系列 (需要确认包名)
-  'qwen-code': {
-    name: 'qwen-code',
-    package: 'qwen2.5-coder',
-    displayName: 'Qwen2.5 Coder',
-    category: 'AI编程助手',
-    note: '需要确认包名'
-  },
+  // 通义千问系列 (包不存在)
+  // 'qwen-code': {
+  //   name: 'qwen-code',
+  //   package: 'qwen2.5-coder',
+  //   displayName: 'Qwen2.5 Coder',
+  //   category: 'AI编程助手',
+  //   note: '需要确认包名'
+  // },
   // 预留更多工具位置
-  'kilo-code': {
-    name: 'kilo-code',
-    package: 'kilo-code-cli',
-    displayName: 'Kilo Code CLI',
-    category: 'AI编程助手',
-    note: '需要确认包名'
-  },
+  // 'kilo-code': {
+  //   name: 'kilo-code',
+  //   package: 'kilo-code-cli',
+  //   displayName: 'Kilo Code CLI',
+  //   category: 'AI编程助手',
+  //   note: '需要确认包名'
+  // },
   'iflow': {
     name: 'iflow',
     package: '@iflow-ai/iflow-cli',
@@ -126,6 +129,363 @@ const CLI_TOOLS = {
     package: '@vibe-kit/grok-cli',
     displayName: 'Grok CLI',
     category: 'AI助手'
+  },
+  'qoder': {
+    name: 'qoder',
+    package: '@qoder-ai/qodercli',
+    displayName: 'Qoder',
+    category: 'AI编程助手'
+  },
+  // 新增辅助工具
+  'openspec': {
+    name: 'openspec',
+    package: '@fission-ai/openspec',
+    displayName: 'OpenSpec',
+    category: 'AI开发工具',
+    note: 'AI-native system for spec-driven development'
+  },
+  'commitizen': {
+    name: 'commitizen',
+    package: 'commitizen',
+    displayName: 'Commitizen',
+    category: 'Git工具',
+    note: '规范化Git提交信息的工具'
+  },
+  'conventional-changelog-cli': {
+    name: 'conventional-changelog-cli',
+    package: 'conventional-changelog-cli',
+    displayName: 'Conventional Changelog',
+    category: 'Git工具',
+    note: '基于约定式提交生成changelog'
+  },
+  'semantic-release-cli': {
+    name: 'semantic-release-cli',
+    package: 'semantic-release-cli',
+    displayName: 'Semantic Release',
+    category: 'Git工具',
+    note: '自动化版本管理和发布'
+  },
+  'release-it': {
+    name: 'release-it',
+    package: 'release-it',
+    displayName: 'Release It',
+    category: 'Git工具',
+    note: '交互式发布工具'
+  },
+  'np': {
+    name: 'np',
+    package: 'np',
+    displayName: 'NP',
+    category: 'Git工具',
+    note: '更好的npm发布体验'
+  },
+  'auto-changelog': {
+    name: 'auto-changelog',
+    package: 'auto-changelog',
+    displayName: 'Auto Changelog',
+    category: 'Git工具',
+    note: '自动生成changelog'
+  },
+  'standard-version': {
+    name: 'standard-version',
+    package: 'standard-version',
+    displayName: 'Standard Version',
+    category: 'Git工具',
+    note: '基于约定式提交自动版本管理'
+  },
+  'changeset': {
+    name: 'changeset',
+    package: '@changesets/cli',
+    displayName: 'Changesets',
+    category: 'Git工具',
+    note: 'Monorepo版本管理工具'
+  },
+  'husky': {
+    name: 'husky',
+    package: 'husky',
+    displayName: 'Husky',
+    category: 'Git工具',
+    note: 'Git钩子管理工具'
+  },
+  'lint-staged': {
+    name: 'lint-staged',
+    package: 'lint-staged',
+    displayName: 'Lint Staged',
+    category: '代码质量',
+    note: '只对暂存文件运行linter'
+  },
+  'prettier': {
+    name: 'prettier',
+    package: 'prettier',
+    displayName: 'Prettier',
+    category: '代码质量',
+    note: '代码格式化工具'
+  },
+  'eslint': {
+    name: 'eslint',
+    package: 'eslint',
+    displayName: 'ESLint',
+    category: '代码质量',
+    note: 'JavaScript代码检查工具'
+  },
+  'typescript': {
+    name: 'typescript',
+    package: 'typescript',
+    displayName: 'TypeScript',
+    category: '代码质量',
+    note: 'JavaScript的超集，添加类型系统'
+  },
+  'nodemon': {
+    name: 'nodemon',
+    package: 'nodemon',
+    displayName: 'Nodemon',
+    category: '开发工具',
+    note: 'Node.js应用自动重启工具'
+  },
+  'pm2': {
+    name: 'pm2',
+    package: 'pm2',
+    displayName: 'PM2',
+    category: '开发工具',
+    note: 'Node.js进程管理器'
+  },
+  'forever': {
+    name: 'forever',
+    package: 'forever',
+    displayName: 'Forever',
+    category: '开发工具',
+    note: 'Node.js进程守护工具'
+  },
+  'cross-env': {
+    name: 'cross-env',
+    package: 'cross-env',
+    displayName: 'Cross Env',
+    category: '开发工具',
+    note: '跨平台环境变量设置'
+  },
+  'rimraf': {
+    name: 'rimraf',
+    package: 'rimraf',
+    displayName: 'Rimraf',
+    category: '开发工具',
+    note: '跨平台文件删除工具'
+  },
+  'mkdirp': {
+    name: 'mkdirp',
+    package: 'mkdirp',
+    displayName: 'Mkdirp',
+    category: '开发工具',
+    note: '递归创建目录'
+  },
+  'ncp': {
+    name: 'ncp',
+    package: 'ncp',
+    displayName: 'NCP',
+    category: '开发工具',
+    note: '异步文件复制'
+  },
+  'http-server': {
+    name: 'http-server',
+    package: 'http-server',
+    displayName: 'HTTP Server',
+    category: '开发工具',
+    note: '简单的HTTP服务器'
+  },
+  'serve': {
+    name: 'serve',
+    package: 'serve',
+    displayName: 'Serve',
+    category: '开发工具',
+    note: '静态文件服务器'
+  },
+  'live-server': {
+    name: 'live-server',
+    package: 'live-server',
+    displayName: 'Live Server',
+    category: '开发工具',
+    note: '带实时重载的开发服务器'
+  },
+  'webpack-cli': {
+    name: 'webpack-cli',
+    package: 'webpack-cli',
+    displayName: 'Webpack CLI',
+    category: '构建工具',
+    note: 'Webpack命令行工具'
+  },
+  'vite': {
+    name: 'vite',
+    package: 'vite',
+    displayName: 'Vite',
+    category: '构建工具',
+    note: '下一代前端构建工具'
+  },
+  'parcel': {
+    name: 'parcel',
+    package: 'parcel',
+    displayName: 'Parcel',
+    category: '构建工具',
+    note: '零配置构建工具'
+  },
+  'rollup': {
+    name: 'rollup',
+    package: 'rollup',
+    displayName: 'Rollup',
+    category: '构建工具',
+    note: 'JavaScript模块打包器'
+  },
+  'esbuild': {
+    name: 'esbuild',
+    package: 'esbuild',
+    displayName: 'ESBuild',
+    category: '构建工具',
+    note: '极速JavaScript打包器'
+  },
+  'swc': {
+    name: 'swc',
+    package: '@swc/cli',
+    displayName: 'SWC',
+    category: '构建工具',
+    note: 'Rust编写的超快JavaScript编译器'
+  },
+  'babel-cli': {
+    name: 'babel-cli',
+    package: '@babel/cli',
+    displayName: 'Babel CLI',
+    category: '构建工具',
+    note: 'JavaScript编译器'
+  },
+  'ts-node': {
+    name: 'ts-node',
+    package: 'ts-node',
+    displayName: 'TS Node',
+    category: '构建工具',
+    note: 'TypeScript执行环境'
+  },
+  'tsx': {
+    name: 'tsx',
+    package: 'tsx',
+    displayName: 'TSX',
+    category: '构建工具',
+    note: 'TypeScript执行器（更快的ts-node替代品）'
+  },
+  'jest': {
+    name: 'jest',
+    package: 'jest',
+    displayName: 'Jest',
+    category: '测试工具',
+    note: 'JavaScript测试框架'
+  },
+  'vitest': {
+    name: 'vitest',
+    package: 'vitest',
+    displayName: 'Vitest',
+    category: '测试工具',
+    note: '极速单元测试框架'
+  },
+  'mocha': {
+    name: 'mocha',
+    package: 'mocha',
+    displayName: 'Mocha',
+    category: '测试工具',
+    note: 'JavaScript测试框架'
+  },
+  'cypress': {
+    name: 'cypress',
+    package: 'cypress',
+    displayName: 'Cypress',
+    category: '测试工具',
+    note: '端到端测试框架'
+  },
+  'playwright': {
+    name: 'playwright',
+    package: 'playwright',
+    displayName: 'Playwright',
+    category: '测试工具',
+    note: '现代端到端测试工具'
+  },
+  'ava': {
+    name: 'ava',
+    package: 'ava',
+    displayName: 'AVA',
+    category: '测试工具',
+    note: '未来的测试运行器'
+  },
+  'tap': {
+    name: 'tap',
+    package: 'tap',
+    displayName: 'TAP',
+    category: '测试工具',
+    note: '测试任何协议'
+  },
+  'supertest': {
+    name: 'supertest',
+    package: 'supertest',
+    displayName: 'Supertest',
+    category: '测试工具',
+    note: 'HTTP断言库'
+  },
+  'nyc': {
+    name: 'nyc',
+    package: 'nyc',
+    displayName: 'NYC',
+    category: '测试工具',
+    note: '代码覆盖率工具'
+  },
+  'codecov': {
+    name: 'codecov',
+    package: 'codecov',
+    displayName: 'Codecov',
+    category: '测试工具',
+    note: '代码覆盖率报告'
+  },
+  'nock': {
+    name: 'nock',
+    package: 'nock',
+    displayName: 'Nock',
+    category: '测试工具',
+    note: 'HTTP服务器模拟'
+  },
+  'sinon': {
+    name: 'sinon',
+    package: 'sinon',
+    displayName: 'Sinon',
+    category: '测试工具',
+    note: '测试间谍、存根和模拟'
+  },
+  'chai': {
+    name: 'chai',
+    package: 'chai',
+    displayName: 'Chai',
+    category: '测试工具',
+    note: 'BDD/TDD断言库'
+  },
+  'expect': {
+    name: 'expect',
+    package: 'expect',
+    displayName: 'Expect',
+    category: '测试工具',
+    note: 'Jest的断言库'
+  },
+  'puppeteer': {
+    name: 'puppeteer',
+    package: 'puppeteer',
+    displayName: 'Puppeteer',
+    category: '测试工具',
+    note: '无头Chrome Node.js API'
+  },
+  'selenium-webdriver': {
+    name: 'selenium-webdriver',
+    package: 'selenium-webdriver',
+    displayName: 'Selenium WebDriver',
+    category: '测试工具',
+    note: '浏览器自动化工具'
+  },
+  'webdriverio': {
+    name: 'webdriverio',
+    package: 'webdriverio',
+    displayName: 'WebdriverIO',
+    category: '测试工具',
+    note: '下一代浏览器和移动端自动化测试框架'
   }
 };
 
@@ -329,6 +689,8 @@ function showToolSelectionMenu(selectedTools = new Set(), verifyVersions = false
     toolsByCategory[category].push({ key, tool });
   }
 
+  // 创建显示顺序到工具键的映射
+  const displayOrderToKey = [];
   let index = 1;
   for (const [category, tools] of Object.entries(toolsByCategory)) {
     console.log(`\n${colors.cyan}━━━ ${category} ━━━${colors.reset}`);
@@ -355,8 +717,19 @@ function showToolSelectionMenu(selectedTools = new Set(), verifyVersions = false
       const marker = isSelected ? `${colors.green}✓${colors.reset}` : ' ';
       const note = tool.note ? ` ${colors.dim}(${tool.note})${colors.reset}` : '';
       console.log(`  ${marker} [${index}] ${colors.cyan}${tool.displayName}${colors.reset} ${status}${note}`);
+
+      // 存储映射关系
+      displayOrderToKey[index - 1] = key;
       index++;
     }
+  }
+
+  // 存储映射关系到全局变量或函数闭包
+  if (typeof global !== 'undefined') {
+    global.displayOrderToKey = displayOrderToKey;
+  } else {
+    // 如果是在浏览器环境或其他环境，使用函数属性存储
+    showToolSelectionMenu.displayOrderToKey = displayOrderToKey;
   }
 
   console.log(`\n${colors.bright}操作:${colors.reset}`);
@@ -441,12 +814,27 @@ function interactiveMode() {
             resolve({ action: 'upgrade-selected', tools: Array.from(selectedTools) });
           }
         } else {
-          // 解析选择
+          // 解析选择 - 使用显示顺序映射
           const numbers = input.split(' ').filter(n => /^\d+$/.test(n));
+
+          // 获取显示顺序映射
+          const displayOrderToKey = (typeof global !== 'undefined' && global.displayOrderToKey) ||
+                                   (showToolSelectionMenu.displayOrderToKey || []);
+
           numbers.forEach(num => {
             const index = parseInt(num) - 1;
-            const keys = Object.keys(CLI_TOOLS);
-            if (index >= 0 && index < keys.length) {
+            if (index >= 0 && index < displayOrderToKey.length) {
+              const key = displayOrderToKey[index];
+              if (key && CLI_TOOLS[key]) {
+                if (selectedTools.has(key)) {
+                  selectedTools.delete(key);
+                } else {
+                  selectedTools.add(key);
+                }
+              }
+            } else if (index >= 0 && index < Object.keys(CLI_TOOLS).length) {
+              // 回退到旧的Object.keys方法（兼容性）
+              const keys = Object.keys(CLI_TOOLS);
               const key = keys[index];
               if (selectedTools.has(key)) {
                 selectedTools.delete(key);

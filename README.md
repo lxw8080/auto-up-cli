@@ -22,6 +22,7 @@
 - **OpenCode** (`opencode-ai`) - OpenCode AI编程工具
 - **Qwen2.5 Coder** (`qwen2.5-coder`) - 阿里通义千问2.5 Coder模型
 - **Kilo Code CLI** (`kilo-code-cli`) - Kilo Code AI编程工具
+- **Qoder** (`@qoder-ai/qodercli`) - Qoder AI编程助手
 
 ### 🔐 代码安全
 - **GitLeaks** (`gitleaks`) - Git提交中的敏感信息检测

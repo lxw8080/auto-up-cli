@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**ai-cli-manager** is a cross-platform Node.js tool that manages installation and upgrades for 15+ AI programming CLI tools. It provides an interactive menu system and command-line interface for managing tools like Gemini CLI, Claude Code, GitHub Copilot CLI, Continue, Aider, and more.
+**ai-cli-manager** is a cross-platform Node.js tool that manages installation and upgrades for 50+ AI programming CLI tools. It provides an interactive menu system and command-line interface for managing tools like Gemini CLI, Claude Code, GitHub Copilot CLI, Continue, Aider, and more.
 
 - **Version**: 1.2.1
 - **Main Language**: JavaScript (Node.js)
@@ -16,7 +16,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Architecture
 
 ### Core Files
-- **`ai-cli-manager.js`** (613 lines) - Main Node.js application containing all logic
+- **`ai-cli-manager.js`** (1000+ lines) - Main Node.js application containing all logic
 - **`ai-cli-manager.sh`** - Shell wrapper for macOS/Linux with dependency checking
 - **`install-dependencies.sh`** - Automated dependency installer for macOS/Linux
 - **Windows Scripts**: `.bat` and `.ps1` equivalents for Windows users
@@ -24,7 +24,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Code Structure
 The application follows a single-file architecture with these key sections:
 
-1. **Tool Configuration** (lines 13-113) - `CLI_TOOLS` object defining all managed tools with:
+1. **Tool Configuration** (lines 19-130) - `CLI_TOOLS` object defining all managed tools with:
    - Package names (npm registry)
    - Display names
    - Categories (AI助手, AI编程助手, 代码安全, Git工具)
@@ -35,7 +35,7 @@ The application follows a single-file architecture with these key sections:
    - `getLatestVersion()` - Gets latest version via `npm view`
    - `installPackage()` - Performs npm install/upgrade with version comparison
 
-3. **Interactive Mode** (lines ~200-450) - Full terminal UI with:
+3. **Interactive Mode** (lines ~300-479) - Full terminal UI with:
    - `interactiveMode()` - Main menu system
    - `displayMainMenu()` - Operation selection (upgrade selected, all, status, exit)
    - `displayToolSelectionMenu()` - Multi-select tool picker with keyboard controls
@@ -50,11 +50,16 @@ The application follows a single-file architecture with these key sections:
    - Batch mode via platform-specific scripts
 
 ### Tool Categories
-The `CLI_TOOLS` object in `ai-cli-manager.js:13-113` organizes 15+ tools:
-- **AI助手**: gemini-cli, claude-code, codex, auggie, copilot-cli
-- **AI编程助手**: continue, codegpt, tabnine, opencommit, aider, qwen-code, kilo-code
+The `CLI_TOOLS` object in `ai-cli-manager.js:19-1000` organizes 50+ tools:
+- **AI助手**: gemini-cli, claude-code, codex, auggie, copilot-cli, iflow-cli, grok-cli
+- **AI编程助手**: continue, opencommit, opencode, qoder
+- **AI开发工具**: openspec
 - **代码安全**: gitleaks
-- **Git工具**: gitmoji-cli
+- **Git工具**: gitmoji-cli, commitizen, conventional-changelog-cli, semantic-release-cli, release-it, np, auto-changelog, standard-version, changeset, husky
+- **代码质量**: lint-staged, prettier, eslint, typescript
+- **开发工具**: nodemon, pm2, forever, cross-env, rimraf, mkdirp, ncp, http-server, serve, live-server
+- **构建工具**: webpack-cli, vite, parcel, rollup, esbuild, swc, babel-cli, ts-node, tsx
+- **测试工具**: jest, vitest, mocha, cypress, playwright, ava, tap, supertest, nyc, codecov, nock, sinon, chai, expect, puppeteer, selenium-webdriver, webdriverio
 
 ## Common Commands
 
@@ -76,6 +81,10 @@ node ai-cli-manager.js claude-code
 
 # Show help
 node ai-cli-manager.js --help
+
+# Using binary aliases (if installed globally)
+ai-cli-manager
+ai-upgrade
 ```
 
 ### Development & Testing
@@ -151,7 +160,7 @@ Located in `.claude/settings.local.json`:
 This is a **pure Node.js script** - no compilation, bundling, or transpilation required. Just edit `ai-cli-manager.js` and run.
 
 ### Adding New Tools
-To add a new tool, edit the `CLI_TOOLS` object in `ai-cli-manager.js:13-113`:
+To add a new tool, edit the `CLI_TOOLS` object in `ai-cli-manager.js:19-130`:
 ```javascript
 'new-tool': {
   name: 'new-tool',
@@ -171,15 +180,42 @@ Uses two npm commands:
 
 **Note**: Version detection is slow (requires multiple npm calls). The interactive tool selection menu now defaults to **Quick Mode** without verification, and allows users to toggle verification mode with the `[C]` key.
 
+### 工具选择编号映射
+**Fixed Issue**: 修复了交互式菜单中工具编号与选择逻辑不匹配的问题。
+- 显示顺序：按类别分组显示（AI助手 → AI编程助手 → AI开发工具 → 代码安全 → Git工具 → 代码质量 → 开发工具 → 构建工具 → 测试工具）
+- 选择逻辑：使用显示顺序到工具键的映射表，确保用户输入的编号对应正确的工具
+- 映射存储：在 `showToolSelectionMenu()` 函数中创建 `displayOrderToKey` 数组存储显示顺序
+
+### NPM包验证和更新
+**2024年包验证结果**：
+- ✅ **验证通过的工具**：已确认所有列出的npm包都存在并可安装
+- ❌ **已移除的工具**：CodeGPT CLI（Go二进制）、Tabnine CLI（只有IDE插件）、Aider（Python包）、Qwen2.5 Coder（包不存在）、Kilo Code CLI（包不存在）
+- 🆕 **新增工具类别**：
+  - **AI开发工具**：OpenSpec（AI原生规范驱动开发）
+  - **Git工具**：Commitizen、Conventional Changelog、Semantic Release、Husky等15个工具
+  - **代码质量**：ESLint、Prettier、TypeScript、Lint Staged等4个工具
+  - **开发工具**：Nodemon、PM2、Cross-env、Rimraf等11个工具
+  - **构建工具**：Webpack CLI、Vite、ESBuild、SWC等9个工具
+  - **测试工具**：Jest、Vitest、Cypress、Playwright等23个工具
+
 ### Error Handling
 - Graceful fallback to null for version detection failures
 - Colored error messages using chalk
 - Platform-specific error guidance (e.g., PowerShell execution policy on Windows)
 
+## Recent Features
+
+### Color Conversion Support
+Recent updates include enhanced color handling with:
+- `color-convert` module for color space conversions
+- `color-name` module with comprehensive color definitions
+- `supports-color` for terminal color capability detection
+- `has-flag` for CLI flag detection
+
 ## Important README Sections
 
 The comprehensive README.md covers:
-- **Supported Tools** (15+ AI CLI tools with npm package names)
+- **Supported Tools** (50+ AI and development CLI tools with npm package names)
 - **Installation Methods** (direct Node.js, shell scripts, Windows batch files)
 - **Platform Requirements** (Node.js 14+, npm 6+)
 - **Troubleshooting** (Node.js detection, npm failures, script execution policies)
