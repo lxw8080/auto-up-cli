@@ -1,0 +1,107 @@
+# ====================
+# Node.js 项目忽略规则
+# ====================
+
+# 依赖目录
+node_modules/
+jspm_packages/
+
+# 构建输出
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# 日志文件
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# 编辑器和 IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# 运行时数据
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# 覆盖率目录
+coverage/
+*.lcov
+.nyc_output/
+
+# ESLint 缓存
+.eslintcache
+
+# 可选的 npm 缓存目录
+.npm
+
+# 可选的 REPL 历史
+.node_repl_history
+
+# 输出的包
+*.tgz
+
+# Yarn Integrity 文件
+.yarn-integrity
+
+# parcel-bundler 缓存
+.cache
+.parcel-cache
+
+# Next.js 构建输出
+.next
+out
+
+# Nuxt.js 构建生成
+.nuxt
+
+# Gatsby 文件
+.cache/
+
+# VuePress 构建输出
+.vuepress/dist
+
+# Serverless 目录
+.serverless/
+
+# FuseBox 缓存
+.fusebox/
+
+# DynamoDB Local 文件
+.dynamodb/
+
+# TernJS 端口文件
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# ====================
+# 项目特定忽略规则
+# ====================
+
+# 临时测试文件
+test-temp/
+temp/
+
+# 备份文件
+*.bak
+*.backup
