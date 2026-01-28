@@ -15,7 +15,8 @@ class EditToolDialog(ttk.Toplevel):
     """编辑工具对话框"""
     
     def __init__(self, parent, tool_data: dict, on_save=None, on_delete=None):
-        super().__init__(parent, title="编辑工具")
+        super().__init__(parent)
+        self.title("编辑工具")
         
         self.tool_data = tool_data
         self.on_save = on_save

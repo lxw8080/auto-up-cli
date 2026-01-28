@@ -36,7 +36,8 @@ class AddToolDialog(ttk.Toplevel):
     """新增工具对话框"""
     
     def __init__(self, parent, on_save=None):
-        super().__init__(parent, title="新增 AI CLI 工具")
+        super().__init__(parent)
+        self.title("新增 AI CLI 工具")
         
         self.on_save = on_save
         self.result = None

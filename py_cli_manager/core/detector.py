@@ -337,6 +337,30 @@ def get_install_command(tool: 'ToolInfo') -> str:
         return commands.get("linux", "")
 
 
+def get_alt_install_command(tool: 'ToolInfo') -> str:
+    """
+    获取工具的备用安装命令
+    当主安装命令失败时使用
+    """
+    if tool.install_type == InstallType.NPM:
+        # npm 类型没有备用命令
+        return ""
+    
+    commands = tool.install_commands
+    if not commands:
+        return ""
+    
+    if is_windows():
+        # 只有当有主命令时才返回备用命令
+        if commands.get("windows") and commands.get("windows_alt"):
+            return commands.get("windows_alt", "")
+    elif is_macos():
+        if commands.get("macos") and commands.get("macos_alt"):
+            return commands.get("macos_alt", "")
+    
+    return ""
+
+
 def normalize_version(version: str) -> str:
     """
     规范化版本号

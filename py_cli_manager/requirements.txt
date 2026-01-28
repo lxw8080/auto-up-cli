@@ -1,8 +1,8 @@
 # AI CLI 工具管理器依赖
 # Python 3.9+ 推荐
 
-# 无外部依赖 - 使用 Python 内置的 tkinter
-# 以下为可选依赖
+# GUI 框架
+ttkbootstrap>=1.10.0
 
-# 打包工具
+# 打包工具 (可选)
 pyinstaller>=6.0.0

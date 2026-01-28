@@ -13,7 +13,8 @@ class ChangelogDialog(ttk.Toplevel):
     """更新日志对话框"""
     
     def __init__(self, parent, tool_name: str, changelog: str):
-        super().__init__(parent, title=f"更新日志 - {tool_name}")
+        super().__init__(parent)
+        self.title(f"更新日志 - {tool_name}")
         
         self.tool_name = tool_name
         self.changelog = changelog

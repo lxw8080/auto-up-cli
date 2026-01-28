@@ -4,6 +4,7 @@
 import tkinter as tk
 from tkinter import messagebox, filedialog
 import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
 from typing import Optional
 import ttkbootstrap as ttk
@@ -424,7 +425,7 @@ class MainWindow(ttk.Window):
             self._log(f"[INFO] {tool.name}: 未安装")
     
     def _refresh_all_status(self):
-        """刷新全部工具状态"""
+        """刷新全部工具状态（并行）"""
         if self._is_busy:
             return
         
@@ -436,15 +437,27 @@ class MainWindow(ttk.Window):
             return
         
         self._set_busy(True)
-        self._set_status("正在检测全部工具状态...")
+        self._set_status("正在并行检测全部工具状态...")
         self._log("[INFO] 开始检测全部工具状态...")
         
+        # 设置所有工具为待检测状态
+        for tool in self.tools:
+            self.tool_list.set_tool_pending(tool)
+        
         def check_all():
-            for i, tool in enumerate(self.tools):
-                self.after(0, lambda t=tool: self.tool_list.set_tool_pending(t))
-                self._log(f"[INFO] 检测 {tool.name}...")
-                check_tool_status(tool)
-                self.after(0, lambda t=tool: self.tool_list.refresh_tool(t))
+            # 使用线程池并行检测
+            with ThreadPoolExecutor(max_workers=5) as executor:
+                futures = {executor.submit(check_tool_status, tool): tool for tool in self.tools}
+                
+                for future in as_completed(futures):
+                    tool = futures[future]
+                    try:
+                        future.result()  # 获取结果（如有异常会抛出）
+                        self.after(0, lambda t=tool: self._log(f"[INFO] 检测 {t.name}... 完成"))
+                    except Exception as e:
+                        self.after(0, lambda t=tool, err=e: self._log(f"[ERROR] 检测 {t.name} 失败: {err}"))
+                    
+                    self.after(0, lambda t=tool: self.tool_list.refresh_tool(t))
             
             self.after(0, self._on_refresh_all_complete)
         
