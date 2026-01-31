@@ -1,11 +1,11 @@
 """
 应用配置设置
 """
-import os
 import json
 from pathlib import Path
 
 # 获取配置目录
+
 def get_config_dir() -> Path:
     """获取配置文件目录"""
     return Path(__file__).parent
@@ -37,3 +37,4 @@ APP_NAME = "AI CLI 工具管理器"
 APP_VERSION = "1.0.0"
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
+CHECK_PARALLEL_WORKERS = 4

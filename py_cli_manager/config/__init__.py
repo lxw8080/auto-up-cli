@@ -10,6 +10,7 @@ from .settings import (
     APP_VERSION,
     WINDOW_WIDTH,
     WINDOW_HEIGHT,
+    CHECK_PARALLEL_WORKERS,
 )
 
 __all__ = [
@@ -21,4 +22,5 @@ __all__ = [
     "APP_VERSION",
     "WINDOW_WIDTH",
     "WINDOW_HEIGHT",
+    "CHECK_PARALLEL_WORKERS",
 ]

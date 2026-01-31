@@ -27,6 +27,7 @@ from config import (
     APP_VERSION,
     WINDOW_WIDTH,
     WINDOW_HEIGHT,
+    CHECK_PARALLEL_WORKERS,
 )
 from core import (
     ToolInfo,
@@ -439,6 +440,7 @@ class MainWindow(ttk.Window):
         self._set_busy(True)
         self._set_status("正在并行检测全部工具状态...")
         self._log("[INFO] 开始检测全部工具状态...")
+        self._log(f"[INFO] 检测并行线程数: {CHECK_PARALLEL_WORKERS}，安装/升级保持串行")
         
         # 设置所有工具为待检测状态
         for tool in self.tools:
@@ -446,7 +448,7 @@ class MainWindow(ttk.Window):
         
         def check_all():
             # 使用线程池并行检测
-            with ThreadPoolExecutor(max_workers=5) as executor:
+            with ThreadPoolExecutor(max_workers=CHECK_PARALLEL_WORKERS) as executor:
                 futures = {executor.submit(check_tool_status, tool): tool for tool in self.tools}
                 
                 for future in as_completed(futures):
