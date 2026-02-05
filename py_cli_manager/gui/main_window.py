@@ -35,6 +35,7 @@ from core import (
     check_tool_status,
     load_tools_from_config,
     tool_to_dict,
+    tool_requires_npm,
     install_tool,
     find_npm,
     get_changelog,
@@ -393,7 +394,7 @@ class MainWindow(ttk.Window):
         if self._is_busy:
             return
         
-        if not find_npm():
+        if tool_requires_npm(tool) and not find_npm():
             messagebox.showerror(
                 "错误",
                 "未找到 npm 命令！\n请确保已安装 Node.js 并将其添加到 PATH。"
@@ -430,26 +431,41 @@ class MainWindow(ttk.Window):
         if self._is_busy:
             return
         
-        if not find_npm():
-            messagebox.showerror(
-                "错误",
-                "未找到 npm 命令！\n请确保已安装 Node.js 并将其添加到 PATH。"
+        npm_available = bool(find_npm())
+        if not npm_available:
+            tools_to_check = [t for t in self.tools if not tool_requires_npm(t)]
+            skipped = [t for t in self.tools if tool_requires_npm(t)]
+
+            if not tools_to_check:
+                messagebox.showerror(
+                    "错误",
+                    "未找到 npm 命令，且没有可在无 npm 情况下检测的工具。"
+                )
+                return
+
+            messagebox.showwarning(
+                "提示",
+                f"未找到 npm 命令，将跳过 {len(skipped)} 个依赖 npm 的工具，"
+                f"仅检测 {len(tools_to_check)} 个工具。"
             )
-            return
+            self._log(f"[WARN] npm 不可用，跳过 {len(skipped)} 个依赖 npm 的工具")
+        else:
+            tools_to_check = self.tools
+            skipped = []
         
         self._set_busy(True)
         self._set_status("正在并行检测全部工具状态...")
         self._log("[INFO] 开始检测全部工具状态...")
         self._log(f"[INFO] 检测并行线程数: {CHECK_PARALLEL_WORKERS}，安装/升级保持串行")
         
-        # 设置所有工具为待检测状态
-        for tool in self.tools:
+        # 设置将要检测的工具为待检测状态
+        for tool in tools_to_check:
             self.tool_list.set_tool_pending(tool)
         
         def check_all():
             # 使用线程池并行检测
             with ThreadPoolExecutor(max_workers=CHECK_PARALLEL_WORKERS) as executor:
-                futures = {executor.submit(check_tool_status, tool): tool for tool in self.tools}
+                futures = {executor.submit(check_tool_status, tool): tool for tool in tools_to_check}
                 
                 for future in as_completed(futures):
                     tool = futures[future]
@@ -461,16 +477,18 @@ class MainWindow(ttk.Window):
                     
                     self.after(0, lambda t=tool: self.tool_list.refresh_tool(t))
             
-            self.after(0, self._on_refresh_all_complete)
+            self.after(0, lambda: self._on_refresh_all_complete(len(skipped)))
         
         thread = threading.Thread(target=check_all, daemon=True)
         thread.start()
     
-    def _on_refresh_all_complete(self):
+    def _on_refresh_all_complete(self, skipped_count: int = 0):
         """全部刷新完成回调"""
         self._set_busy(False)
         self._set_status("就绪")
         self._log("[SUCCESS] 全部工具状态检测完成！")
+        if skipped_count > 0:
+            self._log(f"[WARN] 跳过 {skipped_count} 个依赖 npm 的工具")
         
         upgradable = len(self.tool_list.get_upgradable_tools())
         not_installed = len(self.tool_list.get_not_installed_tools())

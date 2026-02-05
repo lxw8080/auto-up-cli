@@ -5,6 +5,7 @@
 """
 import json
 import re
+import shlex
 import urllib.request
 import urllib.error
 from typing import Optional
@@ -90,8 +91,8 @@ def get_installed_version_custom(version_command: str) -> Optional[str]:
     if not version_command:
         return None
     
-    # 分割命令
-    parts = version_command.split()
+    # 分割命令（支持带引号/空格路径）
+    parts = _split_command(version_command)
     if not parts:
         return None
     
@@ -122,15 +123,25 @@ def get_installed_version_custom(version_command: str) -> Optional[str]:
     return first_line if first_line else None
 
 
+def _split_command(command: str) -> list[str]:
+    """拆分命令字符串，优先使用 shlex 处理引号与空格"""
+    try:
+        parts = shlex.split(command)
+        return parts if parts else command.split()
+    except ValueError:
+        return command.split()
+
+
 def get_installed_version(tool: 'ToolInfo') -> Optional[str]:
     """
     获取工具的已安装版本
     根据安装类型选择不同的检测方式
     """
-    if tool.install_type == InstallType.CUSTOM and tool.version_command:
-        return get_installed_version_custom(tool.version_command)
-    else:
-        return get_installed_version_npm(tool.package)
+    if tool.version_command:
+        version = get_installed_version_custom(tool.version_command)
+        if version:
+            return version
+    return get_installed_version_npm(tool.package)
 
 
 def get_latest_version_npm(package_name: str) -> Optional[str]:
@@ -342,23 +353,36 @@ def get_alt_install_command(tool: 'ToolInfo') -> str:
     获取工具的备用安装命令
     当主安装命令失败时使用
     """
-    if tool.install_type == InstallType.NPM:
-        # npm 类型没有备用命令
-        return ""
-    
     commands = tool.install_commands
     if not commands:
         return ""
     
     if is_windows():
         # 只有当有主命令时才返回备用命令
-        if commands.get("windows") and commands.get("windows_alt"):
-            return commands.get("windows_alt", "")
+        if tool.install_type == InstallType.CUSTOM and not commands.get("windows"):
+            return ""
+        return commands.get("windows_alt", "")
     elif is_macos():
-        if commands.get("macos") and commands.get("macos_alt"):
-            return commands.get("macos_alt", "")
-    
-    return ""
+        if tool.install_type == InstallType.CUSTOM and not commands.get("macos"):
+            return ""
+        return commands.get("macos_alt", "")
+    else:
+        if tool.install_type == InstallType.CUSTOM and not commands.get("linux"):
+            return ""
+        return commands.get("linux_alt", "")
+
+
+def tool_requires_npm(tool: 'ToolInfo') -> bool:
+    """
+    判断工具检测是否依赖 npm
+    """
+    if not tool.package:
+        return False
+    if tool.version_command:
+        return False
+    if tool.github_repo:
+        return False
+    return True
 
 
 def normalize_version(version: str) -> str:

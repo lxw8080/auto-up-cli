@@ -32,6 +32,18 @@ def extract_package_name(input_text: str) -> str:
     return text.strip()
 
 
+def make_tool_id(package: str) -> str:
+    """
+    生成工具 ID，避免 scoped 包冲突
+    """
+    package = package.strip()
+    if package.startswith("@") and "/" in package:
+        return package
+    if "/" in package:
+        return package.split("/")[-1]
+    return package
+
+
 class AddToolDialog(ttk.Toplevel):
     """新增工具对话框"""
     
@@ -226,7 +238,7 @@ class AddToolDialog(ttk.Toplevel):
             return
         
         package = self.package_entry.get().strip()
-        tool_id = package.split("/")[-1] if "/" in package else package
+        tool_id = make_tool_id(package)
         
         self.result = {
             "id": tool_id,

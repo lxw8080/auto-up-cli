@@ -172,7 +172,26 @@ def install_tool(
     if tool.install_type == InstallType.CUSTOM:
         return install_package_custom(tool, callback)
     else:
-        return install_package_npm(tool.package, callback)
+        success, msg = install_package_npm(tool.package, callback)
+        if success:
+            return True, msg
+
+        alt_install_cmd = get_alt_install_command(tool)
+        if alt_install_cmd:
+            if callback:
+                callback("[WARN] npm 安装失败，正在尝试备用安装方式...")
+            alt_success, alt_output = _run_install_command(alt_install_cmd, callback)
+            if alt_success:
+                if callback:
+                    callback("[SUCCESS] 备用方式安装成功!")
+                return True, "备用方式安装成功!"
+            else:
+                fail_msg = "npm 安装失败，备用安装也失败"
+                if callback:
+                    callback(f"[ERROR] {fail_msg}")
+                return False, fail_msg
+
+        return False, msg
 
 
 def batch_install_tools(
