@@ -8,7 +8,9 @@
       "WebSearch",
       "Bash(timeout 10s:*)",
       "WebFetch(domain:www.npmjs.com)",
-      "Bash(npm view:*)"
+      "Bash(npm view:*)",
+      "Bash(pip show:*)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []

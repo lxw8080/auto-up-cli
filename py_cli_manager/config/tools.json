@@ -6,15 +6,12 @@
       "package": "@anthropic-ai/claude-code",
       "category": "AI助手",
       "builtin": true,
-      "note": "macOS使用Homebrew安装，Windows使用官方PowerShell脚本",
+      "note": "默认使用npm全局安装，也可使用平台特定安装方式",
       "githubRepo": "anthropics/claude-code",
-      "installType": "custom",
       "installCommands": {
-        "windows": "irm https://claude.ai/install.ps1 | iex",
-        "windows_alt": "winget install Anthropic.ClaudeCode",
-        "macos": "brew install --cask claude-code",
-        "macos_alt": "curl -fsSL https://claude.ai/install.sh | bash",
-        "linux": "curl -fsSL https://claude.ai/install.sh | bash"
+        "windows_alt": "irm https://claude.ai/install.ps1 | iex",
+        "macos_alt": "brew install --cask claude-code",
+        "linux_alt": "curl -fsSL https://claude.ai/install.sh | bash"
       },
       "versionCommand": "claude --version"
     },
