@@ -28,7 +28,12 @@ const CLI_TOOLS = {
     name: 'claude-code',
     package: '@anthropic-ai/claude-code',
     displayName: 'Claude Code',
-    category: 'AI助手'
+    category: 'AI助手',
+    installCommands: {
+      windows: 'powershell -ExecutionPolicy Bypass -Command "irm https://claude.ai/install.ps1 | iex"',
+      macos: 'curl -fsSL https://claude.ai/install.sh | bash',
+      linux: 'curl -fsSL https://claude.ai/install.sh | bash'
+    }
   },
   'codex': {
     name: 'codex',
@@ -563,22 +568,89 @@ function installPackage(packageName, displayName, currentVersion) {
   }
 }
 
+// 获取平台特定的自定义安装命令
+function getPlatformInstallCommand(tool) {
+  if (!tool.installCommands) return null;
+
+  const platform = process.platform;
+  let cmd = null;
+
+  if (platform === 'win32') {
+    cmd = tool.installCommands.windows || null;
+  } else if (platform === 'darwin') {
+    cmd = tool.installCommands.macos || null;
+  } else {
+    cmd = tool.installCommands.linux || null;
+  }
+
+  return cmd;
+}
+
+// 安装或升级包（支持自定义安装命令）
+function installWithCommand(packageName, displayName, currentVersion, customCmd) {
+  console.log(`\n${colors.cyan}正在安装/升级 ${displayName}...${colors.reset}`);
+
+  try {
+    if (currentVersion) {
+      console.log(`${colors.yellow}当前版本:${colors.reset} ${currentVersion}`);
+    }
+
+    if (customCmd) {
+      console.log(`${colors.cyan}使用自定义安装命令...${colors.reset}`);
+      execSync(customCmd, { stdio: 'inherit', shell: true });
+    } else {
+      execSync(`npm install -g ${packageName}`, { stdio: 'inherit' });
+    }
+
+    const newVersion = getInstalledVersion(packageName) || 'unknown';
+    console.log(`${colors.green}✓ ${displayName} 安装完成${colors.reset}`);
+    console.log(`${colors.green}✓ 新版本:${colors.reset} ${newVersion}`);
+
+    return {
+      success: true,
+      newVersion,
+      upgraded: currentVersion !== newVersion
+    };
+  } catch (error) {
+    // 自定义命令失败，尝试npm作为后备
+    if (customCmd && !customCmd.includes('npm install')) {
+      console.log(`${colors.yellow}自定义安装失败，尝试npm安装...${colors.reset}`);
+      try {
+        execSync(`npm install -g ${packageName}`, { stdio: 'inherit' });
+        const newVersion = getInstalledVersion(packageName) || 'unknown';
+        console.log(`${colors.green}✓ ${displayName} 安装完成${colors.reset}`);
+        return {
+          success: true,
+          newVersion,
+          upgraded: currentVersion !== newVersion
+        };
+      } catch (npmError) {
+        console.error(`${colors.red}✗ ${displayName} 安装失败${colors.reset}`);
+        return { success: false, error: npmError.message };
+      }
+    }
+    console.error(`${colors.red}✗ ${displayName} 安装失败${colors.reset}`);
+    return { success: false, error: error.message };
+  }
+}
+
 // 检查单个工具
 function checkTool(toolKey, tool) {
   console.log(`\n${colors.bright}检查 ${tool.displayName}...${colors.reset}`);
 
   const currentVersion = getInstalledVersion(tool.package);
   const latestVersion = getLatestVersion(tool.package);
+  const customCmd = getPlatformInstallCommand(tool);
 
   if (!currentVersion) {
     console.log(`${colors.yellow}未安装${colors.reset}`);
-    return installPackage(tool.package, tool.displayName, null);
+    return installWithCommand(tool.package, tool.displayName, null, customCmd);
   } else {
     console.log(`${colors.green}已安装${colors.reset} - 当前版本: ${currentVersion}`);
 
     if (latestVersion && currentVersion !== latestVersion) {
       console.log(`${colors.yellow}发现新版本: ${latestVersion}${colors.reset}`);
-      return installPackage(tool.package, tool.displayName, currentVersion);
+      return installWithCommand(tool.package, tool.displayName, currentVersion, customCmd);
     } else {
       console.log(`${colors.green}已是最新版本${colors.reset}`);
       return {
